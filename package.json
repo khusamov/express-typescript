@@ -1,6 +1,6 @@
 {
-  "name": "@khusamov/express-typescript",
-  "version": "1.0.0",
+  "name": "khusamov-express-typescript",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,5 +20,8 @@
   "homepage": "https://github.com/khusamov/express-typescript#readme",
   "dependencies": {
     "express": "^4.15.2"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

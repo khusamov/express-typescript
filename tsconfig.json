@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "commonjs",
+    "target": "es6",
+    "sourceMap": false,
+    "removeComments": false,
+    "declaration": true,
+    "typeRoots": [
+        "node_modules/@types"
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "exclude": [
+    "node_modules",
+    "temp",
+    "dist"
+  ]
+}

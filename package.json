@@ -1,0 +1,24 @@
+{
+  "name": "@khusamov/express-typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon dist/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khusamov/express-typescript.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khusamov/express-typescript/issues"
+  },
+  "homepage": "https://github.com/khusamov/express-typescript#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}

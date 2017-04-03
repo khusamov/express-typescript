@@ -1,12 +1,13 @@
 
-import { Application } from '../index';
+import { HttpServer, Application } from '../index';
+import TestApplication from './app/TestApplication';
 
-let app = new Application();
+let app = new TestApplication();
 
-app.get('/', function (req, res) {
-	res.send('Hello World!')
-})
+let server = new HttpServer(app);
 
-app.listen(8080, function () {
-	console.log('Example app listening on port 8080!')
-})
+server.listen().then(bind => {
+	console.log(`Listening on ${bind}`);
+}).catch(err => {
+	console.error(err);
+});

@@ -1,7 +1,10 @@
 {
   "name": "khusamov-express-typescript",
-  "version": "1.0.1",
   "description": "",
+  "version": "1.0.1",
+  "homepage": "https://github.com/khusamov/express-typescript#readme",
+  "author": "",
+  "license": "ISC",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -12,14 +15,16 @@
     "type": "git",
     "url": "git+https://github.com/khusamov/express-typescript.git"
   },
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/khusamov/express-typescript/issues"
   },
-  "homepage": "https://github.com/khusamov/express-typescript#readme",
+  "devDependencies": {
+    "@types/express": "^4.0.35",
+    "@types/node": "^7.0.12"
+  },
   "dependencies": {
-    "express": "^4.15.2"
+    "express": "4.14.0",
+    "lodash": "^4.17.4"
   },
   "files": [
     "dist"

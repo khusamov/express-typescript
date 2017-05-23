@@ -9,38 +9,79 @@ export default class Renderer {
 	
 	render(res: Express.Response, viewModel: ViewModel) {
 	
-		res.format({
-			json: none => {
-				res.json(viewModel.toJson());
-			},
-			html: none => {
-				
-				try {
-				
+		try {
+			
+			res.format({
+				json: none => {
+					res.json(viewModel.toJson());
+				},
+				html: none => {
 					res.render('index', viewModel.toJson());
 					// if (res.app.get('view engine')) {
 					// 	res.render('index', viewModel.toJson());
 					// } else {
 					// 	res.send(viewModel.toJson());
 					// }
-					
-				} catch (err) {
-					
-					if (err.message == 'No default engine was specified and no extension was provided.') {
-						throw RenderEngineNotSpecified.createFrom(err);
-					} else {
-						throw RendererError.createFrom(err);
-					}
-					
-					
+				},
+				default: none => {
+					//res.status(406).send('Not Acceptable.');
+					throw new NotAcceptable;
 				}
-				
-			},
-			default: none => {
-				//res.status(406).send('Not Acceptable.');
-				throw new NotAcceptable;
+			});
+			
+			
+		} catch (err) {
+			if (!(err instanceof NotAcceptable)) {
+				if (err.message == 'No default engine was specified and no extension was provided.') {
+					throw RenderEngineNotSpecified.createFrom(err);
+				} else {
+					throw RendererError.createFrom(err);
+				}
 			}
-		});
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		// res.format({
+		// 	json: none => {
+		// 		res.json(viewModel.toJson());
+		// 	},
+		// 	html: none => {
+				
+		// 		try {
+				
+		// 			res.render('index', viewModel.toJson());
+		// 			// if (res.app.get('view engine')) {
+		// 			// 	res.render('index', viewModel.toJson());
+		// 			// } else {
+		// 			// 	res.send(viewModel.toJson());
+		// 			// }
+					
+		// 		} catch (err) {
+					
+		// 			if (err.message == 'No default engine was specified and no extension was provided.') {
+		// 				throw RenderEngineNotSpecified.createFrom(err);
+		// 			} else {
+		// 				throw RendererError.createFrom(err);
+		// 			}
+					
+					
+		// 		}
+				
+		// 	},
+		// 	default: none => {
+		// 		//res.status(406).send('Not Acceptable.');
+		// 		throw new NotAcceptable;
+		// 	}
+		// });
 		
 		
 		

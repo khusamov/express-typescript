@@ -1,5 +1,9 @@
 # express-typescript
 
+Прототип 
+https://github.com/romakita/ts-express-decorators
+https://github.com/Romakita/ts-httpexceptions
+
 
 Запуск разработки
 -----------------

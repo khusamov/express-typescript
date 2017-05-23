@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": ".",
     "outDir": "dist",
     "target": "es6",
     "module": "commonjs",
@@ -11,7 +11,10 @@
     "emitDecoratorMetadata": true,
     "typeRoots": [
         "node_modules/@types"
-    ]
+    ],
+    "paths": {
+      "khusamov-express-typescript": ["./index"]
+    }
   },
   "exclude": [
     "node_modules",

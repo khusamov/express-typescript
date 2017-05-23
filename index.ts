@@ -1,6 +1,13 @@
 
-export * from './src/server/HttpServer';
+export * from './src/server/http/HttpServer';
+export * from './src/server/https/HttpsServer';
+
+// export { default as RequestHandler } from './src/RequestHandler';
+// export { default as ErrorRequestHandler } from './src/ErrorRequestHandler';
+
+export { default as Router } from './src/Router';
 export { default as Application } from './src/Application';
+
 export { default as Controller } from './src/controller/Controller';
 export { default as ErrorController } from './src/controller/ErrorController';
-export { default as PageNotFoundController } from './src/controller/PageNotFoundController';
+export { default as NotFoundController } from './src/controller/NotFoundController';

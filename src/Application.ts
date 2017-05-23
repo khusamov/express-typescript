@@ -1,40 +1,51 @@
 
 import * as Express from 'express';
-import HttpMiddleware from './middleware/HttpMiddleware';
-import ErrorController from './controller/ErrorController';
-import PageNotFoundController from './controller/PageNotFoundController';
 
-export default class Application extends HttpMiddleware {
+import Router from './Router';
+import ErrorController from './controller/ErrorController';
+import NotFoundController from './controller/NotFoundController';
+import NotImplementedRouterPlugin from './handler/plugin/NotImplementedRouterPlugin';
+
+export default class Application extends Router {
 	
-	private _app: Express.Application;
+	
+	protected _expressHandler: Express.Application;
+	
+	
+    get expressHandler(): Express.Application {
+        return this._expressHandler ? this._expressHandler : this._expressHandler = Express();
+    }
+	
+	
 	
 	constructor() {
 		super();
-		this._app = Express();
-		this.init();
-		this.use(new PageNotFoundController);
-        this.use(new ErrorController);
+		
+		this.registerPlugin(new NotImplementedRouterPlugin);
+		
+		//this.set('x-powered-by', false); // Эту строку раскомментировать, когда будет создан метод set в классе роутера.
+		
+		
+		this.use(new NotFoundController);
+		this.use(new ErrorController);
 	}
 	
-	protected init() {}
 	
-	get middleware(): Express.Application {
-		return this._app;
-	}
 	
-	get(...args: any[]) {
-		if (arguments.length == 1) {
-			return this._app.get.apply(this, args);
-		}
-		return super.get.apply(this, args);
-	}
+	// get(...args: any[]) {
+	// 	if (arguments.length == 1) {
+	// 		this._app.get.apply(this, args);
+	// 		return this;
+	// 	}
+	// 	return super.get.apply(this, args);
+	// }
 	
-	set(...args: any[]) {
-		return this._app.set.apply(arguments);
-	}
+	// set(...args: any[]) {
+	// 	return this._app.set.apply(arguments);
+	// }
 	
-	listen(...args: any[]) {
-		return this._app.listen.apply(this._app, arguments);
-	}
+	// listen(...args: any[]) {
+	// 	return this._app.listen.apply(this._app, arguments);
+	// }
 	
 }

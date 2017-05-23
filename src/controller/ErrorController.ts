@@ -1,27 +1,67 @@
 
 import * as Express from 'express';
-import AbstractController from './AbstractController';
-import PageNotFoundError from './PageNotFoundError';
 
-export default class ErrorController extends AbstractController {
+import ErrorRequestHandler from '../handler/ErrorRequestHandler';
+//import ControllerStrategy from './ControllerStrategy';
+import ErrorViewModel from '../view/ErrorViewModel';
+import HttpException from '../error/HttpException';
+import NotAcceptable from '../error/4xx/NotAcceptable';
+import RendererError from '../view/error/RendererError';
+import ViewModel from '../view/ViewModel';
+
+import ErrorRenderer from './ErrorRenderer';
+
+export default class ErrorController extends ErrorRequestHandler {
 	
- 	protected _middleware(err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction) {
-		let result: any = this.handler(err, req, res, next);
-		if (result instanceof Error) result = Promise.reject(result);
-		if (!(result instanceof Promise)) result = Promise.resolve(result);
-		result.then(result => {
-			if (!result) throw new Error('Контроллер не вернул ответ.');
-			res.send(result);
-		}).catch(err => {
-			console.error(err);
-		});
+	// constructor() {
+	// 	super(new ControllerStrategy);
+	// }
+	
+	
+ 	protected handler(err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction): any {
+ 		
+ 		
+ 		// Любой контроллер может вернуть ошибку (почему так произойдет это проблемы 
+ 		// разработчика контроллера) - наше дело тут обработать эту ситуацию корректно
+ 		
+ 		// Контроллер ошибок НЕ ДОЛЖЕН возвращать ошибку, потому что он 
+ 		// ее должен обработать 
+ 		
+ 		
+ 		let status = err instanceof HttpException ? err.status : 500;
+ 		res.status(status);
+ 		
+ 		// Выводим в консоль сервера сообщение об ошибке.
+ 		if (err instanceof HttpException) {
+ 			console.error();
+ 			console.error(`${req.method} ${req.path}`);
+ 		}
+ 		console.error(err.stack);
+ 		
+ 		
+ 		
+ 		// Если ошибка NotAcceptable или ошибка связана с отрисовкой результата, то подключаем аварийный отрисовщик.
+ 		if (err instanceof RendererError || err instanceof NotAcceptable) {
+ 			this.view.renderer = new ErrorRenderer;
+ 		}
+ 		
+ 		// Клиенту также возвращаем сообщение об ошибке.
+		return new ErrorViewModel(err);
 	}
 	
- 	handler(err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction) {
- 		res.status(500);
- 		if (err instanceof PageNotFoundError) res.status(404);
- 		console.error(err);
-		return err.toString();
+	onRenderError(err: any, res: Express.Response, viewModel: ErrorViewModel): void {
+		this.view.renderer = new ErrorRenderer;
+		
+		err.previousError = viewModel.data;
+		viewModel.data = err;
+		
+ 		let status = err instanceof HttpException ? err.status : 500;
+ 		res.status(status);
+ 		
+ 		console.error(err.stack);
+		
+		//viewModel.data.previousError = err;
+		this.view.render(this.response, viewModel);
 	}
 	
 }

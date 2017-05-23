@@ -95,19 +95,19 @@ export default class Router extends RequestHandler {
 	
 	post(path: PathParams, ...handlers: RequestHandler[]): this
 	post(path: PathParams, ...handlers: RequestHandlerParams[]): this {
-		this._expressHandler.get(path, ...this.convertToExpressHandlers(handlers));
+		this._expressHandler.post(path, ...this.convertToExpressHandlers(handlers));
 		return this;
 	}
 	
 	put(path: PathParams, ...handlers: RequestHandler[]): this
 	put(path: PathParams, ...handlers: RequestHandlerParams[]): this {
-		this._expressHandler.get(path, ...this.convertToExpressHandlers(handlers));
+		this._expressHandler.put(path, ...this.convertToExpressHandlers(handlers));
 		return this;
 	}
 	
 	delete(path: PathParams, ...handlers: RequestHandler[]): this
 	delete(path: PathParams, ...handlers: RequestHandlerParams[]): this {
-		this._expressHandler.get(path, ...this.convertToExpressHandlers(handlers));
+		this._expressHandler.delete(path, ...this.convertToExpressHandlers(handlers));
 		return this;
 	}
 	

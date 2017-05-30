@@ -25,8 +25,9 @@ coretex
 
 
 
-Тестовый пример API
 
+Тестовый пример API
+http://petstore.swagger.io
 
 
 Разбор шваггер протокола:

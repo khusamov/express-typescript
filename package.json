@@ -12,7 +12,8 @@
     "tsc": "tsc -w",
     "test1": "nodemon dist/test/test1",
     "test2": "nodemon dist/test/test2",
-    "start": "concurrently \"npm run tsc\" \"npm run test2\""
+    "start_": "concurrently \"npm run tsc\" \"npm run test2\"",
+    "start": "gulp"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,13 @@
     "@types/express": "^4.0.35",
     "@types/node": "^7.0.12",
     "@types/passport": "^0.3.3",
-    "concurrently": "^3.4.0"
+    "concurrently": "^3.4.0",
+    "gulp": "^3.9.1",
+    "gulp-changed": "^3.1.0",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-typescript": "^3.1.7",
+    "pug": "^2.0.0-rc.1",
+    "typescript": "^2.3.3"
   },
   "dependencies": {
     "express": "4.14.0",
@@ -33,7 +40,6 @@
     "json-make-html": "^1.0.7",
     "lodash": "^4.17.4",
     "lodash-decorators": "^4.3.1",
-    "mixwith": "^0.1.1",
     "passport": "^0.3.2"
   },
   "files": [

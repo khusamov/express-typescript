@@ -1,6 +1,8 @@
 
 import * as Express from 'express';
 
+import Application from '../Application';
+import Router from '../Router';
 import ErrorRequestHandler from '../handler/ErrorRequestHandler';
 //import ControllerStrategy from './ControllerStrategy';
 import ErrorViewModel from '../view/ErrorViewModel';
@@ -17,6 +19,10 @@ export default class ErrorController extends ErrorRequestHandler {
 	// 	super(new ControllerStrategy);
 	// }
 	
+	
+	get application(): Application {
+		return this.ownerRequesHandler instanceof Application ?  this.ownerRequesHandler : (this.ownerRequesHandler as Router).application;
+	}
 	
  	protected handler(err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction): any {
  		

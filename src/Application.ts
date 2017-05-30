@@ -30,6 +30,11 @@ export default class Application extends Router {
 		this.use(new ErrorController);
 	}
 	
+	set(setting: string, val: any): this {
+		this.expressHandler.set(setting, val);
+		return this;
+	}
+	
 	
 	
 	// get(...args: any[]) {

@@ -16,6 +16,8 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 	
 	private _view: View;
 	
+	ownerRequesHandler: AbstractRequestHandler;
+	
 	request: Express.Request;
 	
 	response: Express.Response;
@@ -41,7 +43,8 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 	get expressHandler(): Function {
 		
 		return (...args: any[]) => {
-			let result = this.handler.apply(this, args);
+			
+			
 			
 			if (args.length == 3) {
 				this.request = args[0];
@@ -53,6 +56,10 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 				this.response = args[2];
 				this.nextFunction = args[3];
 			}
+			
+			let result = this.handler.apply(this, args);
+			
+		
 			
 			// if (this.requestHandlerStrategy) {
 			// 	this.render(result);

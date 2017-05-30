@@ -1,4 +1,7 @@
 
+Прикрутить gulp, чтобы файле не TS тоже копировались в каталог dist
+
+
 Выполненный TODO
 
 + HttpServer, HttpsServer

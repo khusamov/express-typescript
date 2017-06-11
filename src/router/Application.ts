@@ -2,9 +2,9 @@
 import * as Express from 'express';
 
 import Router from './Router';
-import ErrorController from './controller/ErrorController';
-import NotFoundController from './controller/NotFoundController';
-import NotImplementedRouterPlugin from './handler/plugin/NotImplementedRouterPlugin';
+import ErrorController from '../controller/ErrorController';
+import NotFoundController from '../controller/NotFoundController';
+import NotImplementedRouterPlugin from '../handler/plugin/NotImplementedRouterPlugin';
 
 export default class Application extends Router {
 	

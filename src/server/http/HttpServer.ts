@@ -3,7 +3,7 @@ import * as Http from 'http';
 
 import Server from '../Server';
 import { HttpServerConfig, IHttpServerConfig } from './HttpServerConfig';
-import Application from '../../Application';
+import Application from '../../router/Application';
 import HttpsRedirectMiddleware from './HttpsRedirectMiddleware';
 
 export type THttpServerConfig = HttpServerConfig | IHttpServerConfig;

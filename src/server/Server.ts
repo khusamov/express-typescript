@@ -2,7 +2,7 @@
 import * as Net from 'net';
 
 import { ServerConfig, IServerConfig } from './ServerConfig';
-import Application from '../Application';
+import Application from '../router/Application';
 
 export type TConfig = ServerConfig | IServerConfig;
 type TConfigOrApplication = TConfig | Application;

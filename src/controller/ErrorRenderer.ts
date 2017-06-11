@@ -9,6 +9,8 @@ import ViewModel from '../view/ViewModel';
  */
 export default class ErrorRenderer {
 	
+	template: string = 'error';
+	
 	render(res: Express.Response, viewModel: ViewModel) {
 	
 		res.format({
@@ -18,7 +20,7 @@ export default class ErrorRenderer {
 			html: none => {
 				
 				try {
-				    res.render('error', viewModel.toJson());
+				    res.render(this.template, viewModel.toJson());
 				} catch (err) {
 				    //res.json(viewModel.toJson());
 				    

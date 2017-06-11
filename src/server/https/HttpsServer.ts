@@ -3,7 +3,7 @@ import * as Https from 'https';
 
 import Server from '../Server';
 import { HttpsServerConfig, IHttpsServerConfig } from './HttpsServerConfig';
-import Application from '../../Application';
+import Application from '../../router/Application';
 
 export type THttpsServerConfig = HttpsServerConfig | IHttpsServerConfig;
 type TConfigOrApplication = THttpsServerConfig | Application;

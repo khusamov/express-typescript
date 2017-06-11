@@ -1,7 +1,7 @@
 
 import * as implHandler from 'express-implhandler';
 
-import Router from '../../Router';
+import Router from '../../router/Router';
 import AbstractPlugin from '../../plugin/AbstractPlugin';
 import PluginManager from '../../plugin/PluginManager';
 import NotImplementedController from '../../controller/NotImplementedController';

@@ -1,8 +1,8 @@
 
 import * as Express from 'express';
 
-import Application from '../Application';
-import Router from '../Router';
+import Application from '../router/Application';
+import Router from '../router/Router';
 import RequestHandler from '../handler/RequestHandler';
 //import ControllerStrategy from './ControllerStrategy';
 
@@ -13,7 +13,7 @@ export default class Controller extends RequestHandler {
 	// }
 	
 	get application(): Application {
-		return this.ownerRequesHandler instanceof Application ?  this.ownerRequesHandler : (this.ownerRequesHandler as Router).application;
+		return this.endPoint.router instanceof Application ? this.endPoint.router : this.endPoint.router.application;
 	}
 	
 	

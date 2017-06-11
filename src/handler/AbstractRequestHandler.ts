@@ -1,4 +1,5 @@
 
+import * as _ from 'lodash';
 import * as EventEmitter from 'events';
 import * as Express from 'express';
 
@@ -7,6 +8,8 @@ import RedirectRequestHandlerPlugin from './plugin/RedirectRequestHandlerPlugin'
 import Pluggable from '../plugin/Pluggable';
 import View from '../view/View';
 import ViewModel from '../view/ViewModel';
+import PathParams from '../router/PathParams';
+import EndPoint from '../router/EndPoint';
 
 export const PluggableEventEmitter = Pluggable(EventEmitter);
 
@@ -16,13 +19,33 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 	
 	private _view: View;
 	
-	ownerRequesHandler: AbstractRequestHandler;
+	endPoint: EndPoint;
+	
+	// ownerRequesHandler: AbstractRequestHandler;
+	
+	// method: string;
+	
+	// path: PathParams;
+	
+	// get fullPath(): string | string[] {
+	// 	let ownerFullPath = _.isArray(this.ownerRequesHandler) ? this.ownerRequesHandler : [this.ownerRequesHandler];
+	// 	let path = _.isArray(this.path) ? this.path : [this.path];
+		
+		
+	// 	let result = ownerFullPath.reduce(result, i => result.concat(path.map(j => i + j)), []);
+	// 	return result.length == 1 ? result[0] : result;
+		
+	// }
 	
 	request: Express.Request;
 	
 	response: Express.Response;
 	
 	nextFunction: Express.NextFunction;
+	
+	get name(): string {
+		return this.constructor.name;
+	}
 	
 	get view() {
 		return this._view ? this._view : this._view = new View;

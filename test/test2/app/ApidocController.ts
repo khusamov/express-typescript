@@ -4,12 +4,14 @@ import { Controller } from 'khusamov-express-typescript';
 export default class ApidocController extends Controller {
 	
 	handler() {
-		
-		//console.log(typeof this.application);
-		const endPointList = this.application.endPoints.map(endPoint => `${endPoint.method} ${endPoint.path} (${endPoint.handlers.length})`).join('<br/>');
-		//const endPointList = '';
-		
-		return `Наши конечные точки: <br/>${endPointList}`; 
+		this.view.renderer.template = 'apidoc';
+		return {
+			apiEndPointList: this.application.api.map(endPoint => ({
+				method: endPoint.method.toUpperCase(),
+				path: endPoint.path.fullPath.asString,
+				controller: endPoint.handlers.map(handler => handler.name).join(', ')
+			}))
+		};
 	}
 	
 }

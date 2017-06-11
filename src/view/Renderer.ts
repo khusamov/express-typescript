@@ -7,6 +7,8 @@ import RendererError from './error/RendererError';
 
 export default class Renderer {
 	
+	template: string = 'index';
+	
 	render(res: Express.Response, viewModel: ViewModel) {
 	
 		try {
@@ -16,7 +18,7 @@ export default class Renderer {
 					res.json(viewModel.toJson());
 				},
 				html: none => {
-					res.render('index', viewModel.toJson());
+					res.render(this.template, viewModel.toJson());
 					// if (res.app.get('view engine')) {
 					// 	res.render('index', viewModel.toJson());
 					// } else {

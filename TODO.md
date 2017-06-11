@@ -26,7 +26,7 @@ coretex
 
 
 
-Тестовый пример API
+Тестовый пример API со вложенными роутерами
 http://petstore.swagger.io
 
 

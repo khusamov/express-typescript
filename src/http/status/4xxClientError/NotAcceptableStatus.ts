@@ -1,6 +1,5 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 406 Not Acceptable — запрошенный URI не может удовлетворить переданным в заголовке 
@@ -8,8 +7,8 @@ import HttpException from '../HttpException';
  * характеристик для данного ресурса. 
  * Появился в HTTP/1.1.
  */
-export default class NotAcceptable extends HttpException {
+export default class NotAcceptableStatus extends HttpStatus {
     
-    status: number = 406;
+    code: number = 406;
     
 }

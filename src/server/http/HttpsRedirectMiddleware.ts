@@ -4,11 +4,11 @@ import Controller from '../../controller/Controller';
 
 export default class HttpsRedirectMiddleware extends Controller {
     
-    handler(req: Express.Request, res: Express.Response, next: Express.NextFunction) {
-        if (req.protocol === "http") {
-			res.redirect(`https://${req.hostname}${req.originalUrl}`);
+    handler() {
+        if (this.request.protocol === "http") {
+			this.response.redirect(`https://${this.request.hostname}${this.request.originalUrl}`);
 		} else {
-			next();
+			this.nextFunction();
 		}
     }
     

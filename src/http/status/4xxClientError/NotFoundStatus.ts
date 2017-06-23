@@ -1,6 +1,5 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 404 Not Found[18] — самая распространённая ошибка при пользовании Интернетом, 
@@ -11,12 +10,8 @@ import HttpException from '../HttpException';
  * от посторонних глаз определённые ресурсы. 
  * Появился в HTTP/1.0.
  */
-export default class NotFound extends HttpException {
+export default class NotFoundStatus extends HttpStatus {
     
-    status: number = 404;
-    
-    constructor(req: Express.Request) {
-        super(`Страница или ресурс '${req.path}' не найден.`);
-    }
+    code: number = 404;
     
 }

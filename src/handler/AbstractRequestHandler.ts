@@ -11,11 +11,14 @@ import ViewModel from '../view/ViewModel';
 import PathParams from '../router/PathParams';
 import EndPoint from '../router/EndPoint';
 
+import Request from '../http/Request';
+import Response from '../http/Response';
+
 export const PluggableEventEmitter = Pluggable(EventEmitter);
 
 export default class AbstractRequestHandler extends PluggableEventEmitter {
 	
-	private _error: any;
+	//private _error: any;
 	
 	private _view: View;
 	
@@ -37,9 +40,9 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 		
 	// }
 	
-	request: Express.Request;
+	request: Request;
 	
-	response: Express.Response;
+	response: Response;
 	
 	nextFunction: Express.NextFunction;
 	
@@ -69,18 +72,32 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 			
 			
 			
+			// if (args.length == 3) {
+			// 	this.request = new Request(args[0]);
+			// 	this.response = new Response(args[1]);
+			// 	this.nextFunction = args[2];
+			// } else {
+			// 	this._error = args[0];
+			// 	this.request = new Request(args[1]);
+			// 	this.response = new Response(args[2]);
+			// 	this.nextFunction = args[3];
+			// }
+			// let result = this.handler.apply(this, args);
+			
+			
+			let result;
 			if (args.length == 3) {
-				this.request = args[0];
-				this.response = args[1];
+				this.request = new Request(args[0]);
+				this.response = new Response(args[1]);
 				this.nextFunction = args[2];
+				result = this.handler();
 			} else {
-				this._error = args[0];
-				this.request = args[1];
-				this.response = args[2];
+				this.request = new Request(args[1]);
+				this.response = new Response(args[2]);
 				this.nextFunction = args[3];
+				result = this.handler(args[0]);
 			}
 			
-			let result = this.handler.apply(this, args);
 			
 		
 			
@@ -120,7 +137,7 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 				try {
 					this.view.render(this.response, viewModel);
 				} catch (err) {
-					this.onRenderError(err, this.response, viewModel);
+					this.onRenderError(err, viewModel);
 				} finally {
 					this.onRenderFinally();
 				}
@@ -140,7 +157,7 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 		// }
 	}
 	
-	onRenderError(err: any, response: Express.Response, viewModel: ViewModel): void {
+	onRenderError(err: any, viewModel: ViewModel): void {
 		throw err;
 	}
 	

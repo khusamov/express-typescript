@@ -1,6 +1,5 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 301 Moved Permanently — запрошенный документ был окончательно перенесен 
@@ -8,8 +7,8 @@ import HttpException from '../HttpException';
  * некорректно ведут себя при обработке данного кода. 
  * Появился в HTTP/1.0.
  */
-export default class MovedPermanently extends HttpException {
+export default class MovedPermanentlyStatus extends HttpStatus {
     
-    status: number = 301;
+    code: number = 301;
     
 }

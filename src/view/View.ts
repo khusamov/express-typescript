@@ -1,5 +1,8 @@
 
 import * as Express from 'express';
+import Request from '../http/Request';
+import Response from '../http/Response';
+
 import ViewModel from './ViewModel';
 import Renderer from './Renderer';
 
@@ -17,7 +20,7 @@ export default class View {
     
     constructor() {}
     
-    render(res: Express.Response, viewModel: ViewModel) {
+    render(res: Response, viewModel: ViewModel) {
         this.renderer.render(res, viewModel);
     }
     

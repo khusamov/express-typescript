@@ -1,13 +1,12 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 400 Bad Request — сервер обнаружил в запросе клиента синтаксическую ошибку. 
  * Появился в HTTP/1.0.
  */
-export default class BadRequest extends HttpException {
+export default class BadRequestStatus extends HttpStatus {
     
-    status: number = 400;
+    code: number = 400;
     
 }

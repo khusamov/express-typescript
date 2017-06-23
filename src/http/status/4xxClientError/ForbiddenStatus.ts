@@ -1,6 +1,5 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 403 Forbidden[17] — сервер понял запрос, но он отказывается его выполнять 
@@ -18,8 +17,8 @@ import HttpException from '../HttpException';
  * либо сервер не удовлетворён IP-адресом клиента, например, при блокировках. 
  * Появился в HTTP/1.0.
  */
-export default class Forbidden extends HttpException {
+export default class ForbiddenStatus extends HttpStatus {
     
-    status: number = 403;
+    code: number = 403;
     
 }

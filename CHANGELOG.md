@@ -1,4 +1,14 @@
 
+Исправляем Response StatusCode
+
+new HttpException(new StatusCode())
+
+Необходимо отделить друг от друга данные ViewModel и данные HTTP-ответа (статус, заголовки)
+ 
+ response.statusCode = new StatusCode();
+ вместо:
+ viewModel.statusCode = new StatusCode();
+
 Прикрутить gulp, чтобы файле не TS тоже копировались в каталог dist
 
 

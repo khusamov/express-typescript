@@ -12,7 +12,7 @@
     "tsc": "tsc -w",
     "test1": "nodemon dist/test/test1",
     "test2": "nodemon dist/test/test2",
-    "start_": "concurrently \"npm run tsc\" \"npm run test2\"",
+    "start_": "concurrently \"npm run tsc\" \"npm run test1\"",
     "start": "gulp"
   },
   "repository": {

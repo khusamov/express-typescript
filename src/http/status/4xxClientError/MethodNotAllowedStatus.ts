@@ -1,6 +1,5 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 405 Method Not Allowed — указанный клиентом метод нельзя применить 
@@ -11,8 +10,8 @@ import HttpException from '../HttpException';
  * вернуть код 501 (Not Implemented). 
  * Появился в HTTP/1.1.
  */
-export default class MethodNotAllowed extends HttpException {
+export default class MethodNotAllowedStatus extends HttpStatus {
     
-    status: number = 405;
+    code: number = 405;
     
 }

@@ -1,6 +1,5 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 302 Found, 302 Moved Temporarily — запрошенный документ временно доступен 
@@ -9,8 +8,8 @@ import HttpException from '../HttpException';
  * Некоторые клиенты некорректно ведут себя при обработке данного кода 
  * Введено в HTTP/1.0.
  */
-export default class MovedTemporarily extends HttpException {
+export default class MovedTemporarilyStatus extends HttpStatus {
     
-    status: number = 302;
+    code: number = 302;
     
 }

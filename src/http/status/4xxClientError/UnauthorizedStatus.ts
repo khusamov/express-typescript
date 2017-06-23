@@ -1,6 +1,5 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 401 Unauthorized — для доступа к запрашиваемому ресурсу требуется аутентификация.
@@ -8,8 +7,8 @@ import HttpException from '../HttpException';
  * Клиент может повторить запрос, включив в заголовок сообщения поле Authorization 
  * с требуемыми для аутентификации данными.
  */
-export default class Unauthorized extends HttpException {
+export default class UnauthorizedStatus extends HttpStatus {
     
-    status: number = 401;
+    code: number = 401;
     
 }

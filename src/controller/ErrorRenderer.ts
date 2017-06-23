@@ -2,16 +2,19 @@
 import * as Express from 'express';
 import * as JsonMakeHtml from 'json-make-html';
 
+import Request from '../http/Request';
+import Response from '../http/Response';
+import Renderer from '../view/Renderer';
 import ViewModel from '../view/ViewModel';
 
 /**
  * Аварийный отрисовщик результата обработки запроса.
  */
-export default class ErrorRenderer {
+export default class ErrorRenderer extends Renderer {
 	
 	template: string = 'error';
 	
-	render(res: Express.Response, viewModel: ViewModel) {
+	render(res: Response, viewModel: ViewModel) {
 	
 		res.format({
 			json: none => {

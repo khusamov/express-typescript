@@ -1,6 +1,5 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 501 Not Implemented — сервер не поддерживает возможностей, необходимых 
@@ -9,12 +8,8 @@ import HttpException from '../HttpException';
  * к данному ресурсу, то нужно вернуть ответ 405. 
  * Появился в HTTP/1.0.
  */
-export default class NotImplemented extends HttpException {
+export default class NotImplementedStatus extends HttpStatus {
     
-    status: number = 501;
-    
-    constructor(req: Express.Request) {
-        super(`Метод '${req.method}' для запрошенного ресурса не реализован.`);
-    }
+    code: number = 501;
     
 }

@@ -33,7 +33,7 @@ gulp.task('watch', function() {
 
 gulp.task('nodemon', function() {
 	nodemon({
-		script: 'dist/test/test2'
+		script: 'dist/test/test1'
 	});
 });
 

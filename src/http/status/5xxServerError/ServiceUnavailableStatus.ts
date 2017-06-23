@@ -1,6 +1,5 @@
 
-import * as Express from 'express';
-import HttpException from '../HttpException';
+import HttpStatus from '../HttpStatus';
 
 /**
  * 503 Service Unavailable — сервер временно не имеет возможности обрабатывать 
@@ -11,8 +10,8 @@ import HttpException from '../HttpException';
  * большого значения поля Retry-After для уменьшения частоты избыточных запросов. 
  * Появился в HTTP/1.0.
  */
-export default class ServiceUnavailable extends HttpException {
+export default class ServiceUnavailableStatus extends HttpStatus {
     
-    status: number = 503;
+    code: number = 503;
     
 }

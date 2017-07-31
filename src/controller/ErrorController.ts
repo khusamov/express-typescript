@@ -6,7 +6,6 @@ import Response from '../http/Response';
 import Application from '../router/Application';
 import Router from '../router/Router';
 import ErrorRequestHandler from '../handler/ErrorRequestHandler';
-//import ControllerStrategy from './ControllerStrategy';
 import ErrorViewModel from '../view/ErrorViewModel';
 import RendererError from '../view/error/RendererError';
 import ViewModel from '../view/ViewModel';
@@ -18,66 +17,65 @@ import HttpStatus from '../http/status/HttpStatus';
 
 import ErrorRenderer from './ErrorRenderer';
 
+/**
+ * Внимание!
+ * Раньше ErrorController обрабатывал все ошибки, сейчас он будет обрабатывать только непредвиденные
+ * ошибки. Ранее Контроллеры возвращали и модель вида и ошибки (предвиденные), теперь они
+ * будут возвращать только модель вида, а заранее известные ошибки будут обрабатывать сами и упаковывать
+ * в модель вида.
+ */
 export default class ErrorController extends ErrorRequestHandler {
-	
-	// constructor() {
-	// 	super(new ControllerStrategy);
-	// }
-	
-	
 	
 	get application(): Application {
 		return this.endPoint.router instanceof Application ? this.endPoint.router : this.endPoint.router.application;
 	}
 	
- 	//protected handler(err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction): any {
+	protected initRequestHandler() {
+		this.register(new Response({
+			name: 'internalServerError',
+			status: new InternalServerErrorStatus,
+			description: 'Внутренняя ошибка сервера.'
+		}));
+	}
+	
+	/**
+	 * Любой контроллер может вернуть ошибку (почему так произойдет это проблемы 
+	 * разработчика контроллера) - наше дело тут обработать эту ситуацию корректно
+	 * Контроллер ошибок НЕ ДОЛЖЕН возвращать ошибку, потому что он ее должен обработать
+	 */
  	protected handler(err: any): any {
  		
+ 		this.consoleError(err);
  		
- 		// Любой контроллер может вернуть ошибку (почему так произойдет это проблемы 
- 		// разработчика контроллера) - наше дело тут обработать эту ситуацию корректно
+ 		// Если ошибка связана с отрисовкой результата, то подключаем аварийный отрисовщик.
+ 		if (err instanceof RendererError) this.view.renderer = new ErrorRenderer;
  		
- 		// Контроллер ошибок НЕ ДОЛЖЕН возвращать ошибку, потому что он 
- 		// ее должен обработать 
- 		
- 		
- 		this.response.status = this.getStatusFromError(err);
- 		
- 		// Выводим в консоль сервера сообщение об ошибке.
- 		if (err instanceof HttpError) {
- 			console.error();
- 			console.error(`${this.request.method} ${this.request.path}`);
- 		}
- 		console.error(err.constructor.name);
- 		console.error(err.stack);
- 		
- 		
- 		
- 		// Если ошибка NotAcceptableError или ошибка связана с отрисовкой результата, то подключаем аварийный отрисовщик.
- 		if (err instanceof RendererError || err instanceof NotAcceptableError) {
- 			this.view.renderer = new ErrorRenderer;
- 		}
- 		
- 		// Клиенту также возвращаем сообщение об ошибке.
-		return new ErrorViewModel(err);
+		return new ErrorViewModel({
+			error: err,
+			response: 'internalServerError'
+		});
+		
 	}
 	
-	private getStatusFromError(err: any): HttpStatus {
-		return err instanceof HttpError ? err.status : new InternalServerErrorStatus;
-	}
-	
-	onRenderError(err: any, viewModel: ErrorViewModel): void {
+	/**
+	 * Обработчик ошибок отрисовщика ответа.
+	 */
+	onRenderError(err: any, response: Response, viewModel: ErrorViewModel): void {
 		this.view.renderer = new ErrorRenderer;
 		
-		err.previousError = viewModel.data;
-		viewModel.data = err;
+		err.previousError = viewModel.error;
+		viewModel.error = err;
 		
- 		this.response.status = this.getStatusFromError(err);
- 		
- 		console.error(err.constructor.name);
+ 		this.consoleError(err);
+		
+		this.view.render(response, viewModel);
+	}
+	
+	private consoleError(err: any) {
+		console.error();
+ 		//console.error(`${this.request.method} ${this.request.path}`);
+		console.error(err.constructor.name);
  		console.error(err.stack);
-		
-		this.view.render(this.response, viewModel);
 	}
 	
 }

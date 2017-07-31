@@ -15,38 +15,29 @@ export default class ErrorRenderer extends Renderer {
 	template: string = 'error';
 	
 	render(res: Response, viewModel: ViewModel) {
-	
-		res.format({
-			json: none => {
-				res.json(viewModel.toJson());
-			},
-			html: none => {
-				
-				try {
-				    res.render(this.template, viewModel.toJson());
-				} catch (err) {
-				    //res.json(viewModel.toJson());
-				    
-				    
-				    let title = 'Ошибка';
-				    let json = viewModel.toJson();
-				    let body = JsonMakeHtml.make(json);
-				    
-				    
-				    res.send(`<html><head><title>${title}</title></head><body>${body}</body></html>`)
-				    
+		try {
+			res.format({
+				json: none => {
+					res.json(viewModel.toJson());
+				},
+				html: none => {
+					res.render(this.template, viewModel.toJson());
+				},
+				default: none => {
+					res.json(viewModel.toJson());
 				}
-			
-				
-			
-			},
-			default: none => {
-				res.json(viewModel.toJson());
+			});
+		} catch (err) {
+			try {
+				//res.json(viewModel.toJson());
+				let title = 'Ошибка';
+				let json = viewModel.toJson();
+				let body = JsonMakeHtml.make(json);
+				res.send(`<html><head><title>${title}</title></head><body>${body}</body></html>`);
+			} catch (err) {
+				this.onRenderError(err);
 			}
-		});
-		
-		
-		
+		}
 	}
 	
 }

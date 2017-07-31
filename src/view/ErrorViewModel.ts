@@ -3,12 +3,12 @@ import ViewModel from './ViewModel';
 
 export default class ErrorViewModel extends ViewModel {
     
-    // constructor(private err: any) {
-    //     super();
-    // }
+    get error(): Error {
+        return this.data.error;
+    }
     
-    // toJson(): any {
-    //     return this.err;
-    // }
+    set error(err: Error) {
+        this.data.error = err;
+    }
     
 }

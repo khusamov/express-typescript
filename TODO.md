@@ -1,53 +1,36 @@
 
 
-РАБОЧИЕ ССЫЛКИ
 
-https://toster.ru/q/411980
-http://zf2.com.ua/doc/68
-https://framework.zend.com/manual/2.4/en/tutorials/tutorial.eventmanager.html
-http://zf2.com.ua/doc/130
-https://github.com/zendframework/zendframework
-https://github.com/zendframework/zend-mvc/blob/master/src/Controller/PluginManager.php
-https://github.com/zendframework/zend-servicemanager/blob/master/src/AbstractPluginManager.php
-http://www.stoimen.com/blog/2010/05/25/download-files-with-zend-framework/
+-----------------------------------------------
+РАЗДЕЛ Responses швагеровской спецификации
+
+
+Создать класс Схема https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject
+Создать класс http/Header 
 
 
 
 
+-----------------------------------------------
+ТЕСТОВЫЙ ПРИМЕР доделать
 
-TODO
+Тестовый пример API со вложенными роутерами
+    Также добавить безресурсные контроллеры, чтобы они попали в анонимный ресурс
+    Комбинированные пути
+    Пути с регулярными выражениями
 
-Может короче имя придумать?
-khusamov-express-typescript
-khexpress
-
-coretex
-
-
-
-Продолжение разговора про миксины (ну и долго же они реагируют)
-https://github.com/Microsoft/TypeScript/issues/15870#issuecomment-308491310
-
-
-
-
-2) Переходим к определению параметров конечных точек АПИ
-
-
-3) Тестовый пример API со вложенными роутерами
-http://petstore.swagger.io
 
 
 Разбор шваггер протокола:
-C:\Users\Святослав\Documents\@ Проекты\khusamov-express-typescript\Пример сервера и клиента Шваггер
-https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
-https://www.npmjs.com/package/swagger
-https://www.npmjs.com/package/swagger-editor
-https://www.npmjs.com/package/swagger-jsdoc
-https://www.npmjs.com/package/swagger-router
-https://www.npmjs.com/package/swagger-express-router
-http://editor.swagger.io/
-http://petstore.swagger.io/
+    Пример сервера и клиента Шваггер /temp/swagger-sample
+    https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
+    https://www.npmjs.com/package/swagger
+    https://www.npmjs.com/package/swagger-editor
+    https://www.npmjs.com/package/swagger-jsdoc
+    https://www.npmjs.com/package/swagger-router
+    https://www.npmjs.com/package/swagger-express-router
+    http://editor.swagger.io/
+    http://petstore.swagger.io/
 
 
 Express
@@ -56,12 +39,18 @@ Express
     delete
     set
 
+
+
+-----------------------------------------------
+КЛИЕНТ
+
+
 Генерация Swagger документации
 Создание REST-клиента для тестирования API
 
     
 ApplicationConfig
-Application - this.set('x-powered-by', false);
+
 
 
 Доделать следующие действия контроллера:
@@ -72,6 +61,9 @@ res.attachment('path/to/logo.png');
 res.download(path [, filename] [, fn])
 res.end();
 
+
+-----------------------------------------------
+ПЛАГИНЫ
 
 
 Passport

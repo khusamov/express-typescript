@@ -1,6 +1,5 @@
 
 import * as Express from 'express';
-import Request from '../http/Request';
 import Response from '../http/Response';
 
 import ViewModel from './ViewModel';
@@ -20,6 +19,10 @@ export default class View {
     
     constructor() {}
     
+    /**
+     * Сейчас отрисовка и отправка ответа совмещены.
+     * Особенность Экспресса.
+     */
     render(res: Response, viewModel: ViewModel) {
         this.renderer.render(res, viewModel);
     }

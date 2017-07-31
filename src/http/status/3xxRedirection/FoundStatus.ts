@@ -8,7 +8,7 @@ import HttpStatus from '../HttpStatus';
  * Некоторые клиенты некорректно ведут себя при обработке данного кода 
  * Введено в HTTP/1.0.
  */
-export default class MovedTemporarilyStatus extends HttpStatus {
+export default class FoundStatus extends HttpStatus {
     
     code: number = 302;
     

@@ -1,41 +1,47 @@
 html
-    head
-        title Документация АПИ
-        style.
-            body {
-                padding: 30px 5%;
-            }
-            table {
-                width: 100%;
-                border-top: 1px solid black;
-                border-left: 1px solid black;
-                border-collapse: collapse;
-            }
-            td, th {
-                padding: 6px;
-                border-bottom: 1px solid black;
-                border-right: 1px solid black;
-            }
-            th {
-                text-align: left;
-                background: #b0e0e6;
-            }
-            caption {
-                text-align: right;
-                margin-bottom: 3px;
-            }
-    body
-        h1 Документация АПИ
-        table
-            caption Список конечных точек (#{apiEndPointList.length})
-            tr
-                th №
-                th Метод
-                th Путь
-                th Контроллер
-            each endPoint, index in apiEndPointList
-                tr
-                    td= index + 1
-                    td= endPoint.method
-                    td= endPoint.path
-                    td= endPoint.controller
+	head
+		title Документация АПИ
+		style.
+			body {
+				padding: 30px 5%;
+			}
+			table {
+				width: 100%;
+				border-top: 1px solid black;
+				border-left: 1px solid black;
+				border-collapse: collapse;
+			}
+			td, th {
+				padding: 6px;
+				border-bottom: 1px solid black;
+				border-right: 1px solid black;
+			}
+			th {
+				text-align: left;
+				background: #b0e0e6;
+			}
+			caption {
+				text-align: right;
+				margin-bottom: 3px;
+			}
+	body
+		h1 Документация АПИ
+		
+		each resource in resources
+			if resource.endPoints.length
+				h2 #{resource.isAnonymous ? 'АПИ' : `Ресурс "${resource.name}" / ${resource.description}`}
+				table
+					caption Список конечных точек (#{resource.endPoints.length})
+					tr
+						th №
+						th Метод
+						th Путь
+						th Контроллер
+						th Описание
+					each endPoint, index in resource.endPoints
+						tr
+							td= index + 1
+							td= endPoint.method.toUpperCase()
+							td= endPoint.path.fullPathAsString
+							td= endPoint.handlers.map(handler => `${handler.name}`).join(', ')
+							td= endPoint.description

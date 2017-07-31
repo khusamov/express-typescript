@@ -1,42 +1,19 @@
 
-import * as _ from 'lodash';
-import * as Express from 'express';
+import { default as PathParams, isPathParams, eqPathParams } from '../handler/PathParams';
+import { default as EndPoint, IEndPoint, IFreeEndPoint } from '../handler/endPoint/EndPoint';
+
+import BaseRouter from './BaseRouter';
 import Application from './Application';
-import { PathParams, isPathParams } from './PathParams';
-import RequestHandler from '../handler/RequestHandler';
-import ErrorRequestHandler from '../handler/ErrorRequestHandler';
-import AbstractRequestHandler from '../handler/AbstractRequestHandler';
-import EndPoint from './EndPoint';
 
-type ExpressRequestHandlerParams = Express.RequestHandler | Express.ErrorRequestHandler | (Express.RequestHandler | Express.ErrorRequestHandler)[];
-type ExpressRequestHandlers = Express.RequestHandler[] | ExpressRequestHandlerParams[];
-
-export type RequestHandlerParams = RequestHandler | ErrorRequestHandler | (RequestHandler | ErrorRequestHandler)[];
-type RequestHandlers = RequestHandler[] | RequestHandlerParams[];
-
-// export interface IEndPoint {
-// 	path: PathParams;
-// 	method: string;
-// 	handlers: AbstractRequestHandler[];
-// }
-
-// export interface IApiEndPoint {
-// 	path: PathParams;
-// 	method: string;
-// 	handler: AbstractRequestHandler;
-// }
-
-export default class Router extends RequestHandler {
+export default class Router extends BaseRouter {
 	
-	protected _expressHandler: Express.Router;
-	
-	get expressHandler(): Express.Router {
-		return this._expressHandler ? this._expressHandler : this._expressHandler = Express.Router();
+	get application(): Application {
+		return this.endPoint.router instanceof Application ? this.endPoint.router : this.endPoint.router.application;
 	}
 	
 	private _endPoints: EndPoint[];
 	
-	get endPoints(): EndPoint[] {
+	private get endPoints(): EndPoint[] {
 		return this._endPoints ? this._endPoints : this._endPoints = [];
 	}
 	
@@ -44,30 +21,39 @@ export default class Router extends RequestHandler {
 		return this.getEndPoints(true).filter(endPoint => endPoint.method != 'use');
 	}
 	
-	// get api(): IApiEndPoint[] {
-	// 	return this.endPoints.reduce((result, endPoint) => {
-	// 		return result.concat(_.flatten(endPoint.handlers.map(handler => {
-	// 			return handler instanceof Router ? (handler as Router).api : {
-	// 				path: endPoint.path,
-	// 				method: endPoint.method,
-	// 				handler
-	// 			};
-	// 		})))
-	// 	}, []);
-	// }
-	
-	// get application(): Application {
-	// 	return this.ownerRequesHandler instanceof Application ?  this.ownerRequesHandler : (this.ownerRequesHandler as Router).application;
-	// }
-	
-	get application(): Application {
-		return this.endPoint.router instanceof Application ? this.endPoint.router : this.endPoint.router.application;
-	}
-	
 	constructor() {
 		super();
-		this.expressHandler;
-		this.init();
+		this.initRouter();
+	}
+	
+	protected initRouter() {}
+	
+	protected registerHandlers(method: string, path: PathParams, handlers: RequestHandlers): this {
+		
+		super.registerHandlers(method, path, handlers);
+		
+		let endPoint = this.findEndPoint(method, path);
+		if (!endPoint) {
+			endPoint = new EndPoint({
+				path: path,
+				method: method,
+				router: this
+			});
+			this.endPoints.push(endPoint);
+		}
+		endPoint.handlers = endPoint.handlers.concat(_.flatten(handlers));
+		_.flatten(handlers).forEach(handler => {
+			// Сделано искусственное ограничение. У обработчика не может быть более одного владельца. Хотя в Экспрессе это допускается.
+			if (handler.endPoint) throw new Error(`Попытка перезаписи владельца обработчика '${handler.constructor.name}'.`);
+			handler.endPoint = endPoint;
+		});
+		return this;
+	}
+	
+	protected findEndPoint(method: string, path: PathParams): EndPoint {
+		return this.endPoints.find(endPoint => {
+			return endPoint.method == method && eqPathParams(endPoint.path.value, path);
+		});
 	}
 	
 	/**
@@ -84,115 +70,25 @@ export default class Router extends RequestHandler {
 		return this.endPoints;
 	}
 	
-	protected init() {}
-	
-	private getExpressHandlers(handlers: RequestHandlers): ExpressRequestHandlers {
-		// BUG https://goo.gl/3EdrIF
-		// Одно из решений проблемы https://toster.ru/q/419241
+	protected createEndPoint(config: IFreeEndPoint): this {
+		// Чтобы избежать двойной регистрации обработчиков удаляем их из конфига,
+		// а затем их регистрируем после регистрации конечной точки.
+		const handlers = config.handlers || [];
+		delete config.handlers;
 		
-		return _.flatten(handlers).map(handler => handler.expressHandler);
-		
-		
-		// return (<(RequestHandler | RequestHandlerParams)[]>handlers).map( 
-		// 	handler => handler instanceof RequestHandler || handler instanceof ErrorRequestHandler ? 
-		// 		handler.expressHandler : 
-		// 		handler.map(handler => handler.expressHandler)
-		// );
-	}
-	
-	private registerEndPoint(method: string, path: PathParams, handlers: RequestHandlers): this {
-		
-		let flattenedHandlers = _.flatten(handlers);
-		
-		
-		// flattenedHandlers.forEach(handler => {
-		// 	if (handler.endPoint) throw new Error(`Попытка перезаписи владельца обработчика '${handler.constructor.name}'.`);
-		// });
-		
-		
-		
-		
-		// flattenedHandlers.forEach(handler => {
-		// 	handler.path = path;
-		// 	handler.method = method;
-		// 	handler.ownerRequesHandler = this;
-		// });
-		
-		const endPoint = new EndPoint({
-			path: path,
-			method: method,
-			handlers: flattenedHandlers,
-			router: this
-		});
-		
-		flattenedHandlers.forEach(handler => {
-			// Сделано искусственное ограничение. У обработчика не может быть более одного владельца. Хотя в Экспрессе это допускается.
-			if (handler.endPoint) throw new Error(`Попытка перезаписи владельца обработчика '${handler.constructor.name}'.`);
-			handler.endPoint = endPoint;
-		});
-		
+		// Регистрация конечной точки.
+		config.router = this;
+		const endPoint = new EndPoint(config as IEndPoint);
 		this.endPoints.push(endPoint);
-		// this.endPoints.push({
-		// 	path: path,
-		// 	method: method,
-		// 	handlers: flattenedHandlers
-		// });
-		return this;
-	}
-	
-	use(...handlers: RequestHandler[]): this
-	use(...handlers: RequestHandlerParams[]): this
-	use(path: PathParams, ...handlers: RequestHandler[]): this
-	use(path: PathParams, ...handlers: RequestHandlerParams[]): this
-	use(...args: (PathParams | RequestHandler)[]): this
-	use(...args: (PathParams | RequestHandlerParams)[]): this {
-		let handlers: RequestHandlers = <RequestHandlers>(isPathParams(args[0]) ? args.slice(1) : args);
 		
-		let path: PathParams = isPathParams(args[0]) ? <PathParams>args[0] : null;
-		
-		this.emit('beforeUse', { path, handlers });
-		
-		
-		this.registerEndPoint('use', path ? path : '/', handlers);
-		if (path) {
-			this._expressHandler.use(path, ...this.getExpressHandlers(handlers));
-		} else {
-			this._expressHandler.use(...this.getExpressHandlers(handlers));
+		// Регистрация обработчиков.
+		if (handlers.length) {
+			let args = [];
+			if (endPoint.path) args.push(endPoint.path.value);
+			args = args.concat(handlers);
+			this[endPoint.method].apply(this, args);
 		}
 		
-		
-		
-		this.emit('use', { path, handlers });
-		
-		
-		return this;
-	}
-	
-	get(path: PathParams, ...handlers: RequestHandler[]): this
-	get(path: PathParams, ...handlers: RequestHandlerParams[]): this {
-		this.registerEndPoint('get', path, handlers);
-		this._expressHandler.get(path, ...this.getExpressHandlers(handlers));
-		return this;
-	}
-	
-	post(path: PathParams, ...handlers: RequestHandler[]): this
-	post(path: PathParams, ...handlers: RequestHandlerParams[]): this {
-		this.registerEndPoint('post', path, handlers);
-		this._expressHandler.post(path, ...this.getExpressHandlers(handlers));
-		return this;
-	}
-	
-	put(path: PathParams, ...handlers: RequestHandler[]): this
-	put(path: PathParams, ...handlers: RequestHandlerParams[]): this {
-		this.registerEndPoint('put', path, handlers);
-		this._expressHandler.put(path, ...this.getExpressHandlers(handlers));
-		return this;
-	}
-	
-	delete(path: PathParams, ...handlers: RequestHandler[]): this
-	delete(path: PathParams, ...handlers: RequestHandlerParams[]): this {
-		this.registerEndPoint('delete', path, handlers);
-		this._expressHandler.delete(path, ...this.getExpressHandlers(handlers));
 		return this;
 	}
 	

@@ -10,19 +10,8 @@ export default class ErrorRequestHandler extends AbstractRequestHandler {
 		};
 	}
 	
-	
-    // getExpressRequestHandler(): Express.ErrorRequestHandler {
-    //     return this.handler.bind(this);
-    // }
-    
- //   protected handler(err: any, req: Express.Request, res: Express.Response, next: Express.NextFunction): any {
-	// 	next();
-	// }
     protected handler(err: any): any {
 		this.nextFunction();
 	}
-	
-	
-	
 	
 }

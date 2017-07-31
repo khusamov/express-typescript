@@ -10,23 +10,4 @@ export default class RequestHandler extends AbstractRequestHandler {
 		};
 	}
 	
-	//constructor() {}
-	
-	
-	// getExpressRequestHandler(): Express.RequestHandler {
-	// 	return this.handler.bind(this);
-	// }
-	
-	
-	
-	
-	// protected handler(req: Express.Request, res: Express.Response, next: Express.NextFunction): any {
-	// 	next();
-	// }
-	
-	
-	protected handler(): any {
-		this.nextFunction();
-	}
-		
 }

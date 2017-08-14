@@ -2,12 +2,12 @@
 import * as Express from 'express';
 import HttpStatus from './status/HttpStatus';
 
-export interface IResponseConfig {
+export interface IResponse {
+	name: string;
 	status: HttpStatus;
-	schema?: any;
 	description?: string;
-	headers?: any[];
-	examples?: any[];
+	headers?: Header[];
+	content?: MediaType[];
 }
 
 /**
@@ -17,39 +17,36 @@ export interface IResponseConfig {
  */
 export default class Response {
 	
-	name: string;
-	
 	expressResponse: Express.Response;
+	
+	name: string;
 	
 	status: HttpStatus;
 	
 	/**
 	 * Required. A short description of the response. GFM syntax can be used for rich text representation.
 	 */
-	description?: string;
+	description: string;
+
+	/**
+	 * Maps a header name to its definition. RFC7230 states header names are case insensitive. 
+	 * If a response header is defined with the name "Content-Type", it SHALL be ignored.
+	 */
+	headers: Header[];
 	
 	/**
-	 * A definition of the response structure. It can be a primitive, an array or an object. 
-	 * If this field does not exist, it means no content is returned as part of the response. 
-	 * As an extension to the Schema Object, its root type value may also be "file". 
-	 * This SHOULD be accompanied by a relevant produces mime-type.
+	 * A map containing descriptions of potential response payloads. The key is a media type or media type 
+	 * range and the value describes it. For responses that match multiple keys, only the most specific 
+	 * key is applicable. e.g. text/plain overrides text/*
 	 */
-	schema?: any;
-	
-	/**
-	 * A list of headers that are sent with the response.
-	 */
-	headers?: any[];
-	
-	/**
-	 * An example of the response message.
-	 */
-	examples?: any[];
+	content: MediaType[];
 	
 	constructor(config: IResponseConfig) {
+		this.name = config.name;
 		this.status = config.status;
 		if ('description' in config) this.description = config.description;
-		if ('schema' in config) this.schema = config.schema;
+		if ('headers' in config) this.headers = config.headers;
+		if ('content' in config) this.content = config.content;
 	}
 	
 	/**

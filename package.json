@@ -35,6 +35,7 @@
     "typescript": "^2.3.3"
   },
   "dependencies": {
+    "ajv": "^5.2.2",
     "express": "4.14.0",
     "express-implhandler": "^1.1.3",
     "json-make-html": "^1.0.7",

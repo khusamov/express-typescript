@@ -14,6 +14,9 @@ import RedirectRequestHandlerPlugin from './plugin/RedirectRequestHandlerPlugin'
 import PathParams from './endPoint/PathParams';
 import EndPoint from './endPoint/EndPoint';
 
+/**
+ * https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.0.md#operationObject
+ */
 export const PluggableEventEmitter = Pluggable(EventEmitter);
 export default class AbstractRequestHandler extends PluggableEventEmitter {
 	
@@ -22,6 +25,10 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 	 */
 	endPoint: EndPoint;
 	
+	/**
+	 * Объект запроса. Связан с объектом запроса Экспресса.
+	 * Доступен в обработчике сразу после запроса.
+	 */
 	request: Request;
 	
 	/**
@@ -30,17 +37,35 @@ export default class AbstractRequestHandler extends PluggableEventEmitter {
 	 */
 	expressResponse: Express.Response;
 	
+	/**
+	 * Функция next() Экспресса. Доступна в обработчике, но вместо нее следует 
+	 * пользоваться плагином redirect.
+	 */
 	nextFunction: Express.NextFunction;
 	
 	/**
 	 * Перечень входных параметров обработчика ответа.
+	 * A list of parameters that are applicable for this operation. If a parameter is already defined at the Path Item, 
+	 * the new definition will override it but can never remove it. The list MUST NOT include duplicated parameters. 
+	 * A unique parameter is defined by a combination of a name and location.
+	 * https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.0.md#operationObject
 	 */
 	parameters: Parameter[];
 	
 	/**
 	 * Шаблоны ответов.
+	 * REQUIRED. The list of possible responses as they are returned from executing this operation.
+	 * https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.0.md#operationObject
 	 */
 	responses: Response[];
+	
+	/**
+	 * The request body applicable for this operation. The requestBody is only supported in HTTP methods 
+	 * where the HTTP 1.1 specification RFC7231 has explicitly defined semantics for request bodies. 
+	 * In other cases where the HTTP spec is vague, requestBody SHALL be ignored by consumers.
+	 * https://github.com/OAI/OpenAPI-Specification/blob/OpenAPI.next/versions/3.0.0.md#operationObject
+	 */
+	requestBody: RequestBody;
 	
 	get name(): string {
 		return this.constructor.name;

@@ -3,7 +3,7 @@
 Терминология:
 
 JSON Schema - стандарт описания структуры данных на JSON.
-OpenAPI (бывший Schwagger) - спецификация для описания веб-сервисов REST.
+OpenAPI (бывший Swagger) - спецификация для описания веб-сервисов REST.
 REST-клиент - инструмент для тестирования веб-сервисов REST.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -31,10 +31,30 @@ TODO:
         придумать способ хранения схем
             Например можно пользоваться конвертером https://github.com/chaliy/sequelize-json-schema
 
+Объектная модель JSON Schema
+    А она нужна? 
+        В OOM3 схема может хранится как простой объект. Для валидатора этого достаточно.
+        А доступ к внутренним объектам схемы пока не нужен. И скорее всего не понадобится вовсе.
+    Попробовать найти существующий вариант.
+    Написать свой вариант:
+        JSON Schema Object Model
+        jsonschema-object-model-spec (JSOM)
+        jsonschema-object-model
 
-Объектная библиотека спецификации OpenAPI (написать свою)
+Объектная модель спецификации OpenAPI
+    Попробовать найти существующий вариант.
+    Написать свой вариант:
+        OpenAPI 3 Object Model
+        openapi3-object-model-spec (OOM3)
+        openapi3-object-model
+        Посмотреть 
+            https://github.com/metadevpro/openapi3-ts/blob/master/src/model/OpenApi.ts
+            https://www.npmjs.com/package/swagger-parser
+            https://github.com/OAI/OpenAPI-Specification
 
-Написать специальный плагин для Express
+Написать готовый сервер на основе Express
+    express-openapi3
+    openapi3-server
     Разбор шваггер протокола:
         Пример сервера и клиента Шваггер /temp/swagger-sample
         https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md
@@ -46,21 +66,27 @@ TODO:
         http://editor.swagger.io/
         http://petstore.swagger.io/
 
-Кодогенератор моделей данных для сервера sequelize на основе OpenAPI
-
-Кодогенератор моделей данных для клиента на основе OpenAPI
-
-Кодогенератор библиотеки доступа к серверу для клиента
-
 
 Минимально функциональная версия инструментария:
     Здесь можно уже пробовать создавать примеры серверов.
 
 
+Кодогенератор моделей данных для сервера sequelize на основе OpenAPI
+    openapi3-to-sequelize-models
+
+Кодогенератор моделей данных для клиента на основе OpenAPI
+
+Кодогенератор библиотеки доступа к серверу для клиента
+
 Написать редактор OpenAPI
-    Пример готового редактора OpenAPI v3 https://github.com/Mermade/openapi-gui
-    Еще пример готового редактора, но для Шваггер в2 https://studio.restlet.com/
     Примеры АПИ https://github.com/OAI/OpenAPI-Specification/tree/master/examples/v3.0
+    Примеры готовых редакторов:
+        Eclipse Editor for OpenAPI 2.0 and 3.0 https://github.com/RepreZen/KaiZen-OpenAPI-Editor
+        Для OpenAPI v3 https://github.com/Mermade/openapi-gui
+        Для Шваггер в2 https://studio.restlet.com/
+        Для Шваггер в2 https://github.com/swagger-api/swagger-editor
+    Список готовых редакторов можно посмотреть тут:
+        https://github.com/OAI/OpenAPI-Specification/blob/master/IMPLEMENTATIONS.md
 
 Написать или найти готовый редактор JSON Schema.
 
@@ -71,9 +97,13 @@ TODO:
         Restlet Client 
             https://restlet.com/modules/client/
             https://chrome.google.com/webstore/detail/restlet-client-rest-api-t/aejoelaoggembcahagimdiliamlcdmfm
+    Глянуть на эти произведения:
+        https://github.com/swagger-api/swagger-UI (Browse and test a REST API described with the OpenAPI 3.0 Specification.)
+        https://github.com/koumoul-dev/openapi-viewer (Web-Based interface for visualizing and testing OpenAPI\Swagger definitions)
+        https://github.com/temando/open-api-renderer (A React renderer for Open API v3)
 
 
-Расширение специального плагина для Express:
+Расширение специального плагина express-openapi3 для Express:
     Passport (https://www.npmjs.com/package/passport-openapi)
     Sessions
     Cookies
@@ -125,7 +155,6 @@ TODO факультатив:
 
 Процесс создания сервера:
 
-АПИ сервер https://github.com/metadevpro/openapi3-ts/blob/master/src/model/OpenApi.ts
 На вход 
     подается документация
     Также пишутся обработчики операций
